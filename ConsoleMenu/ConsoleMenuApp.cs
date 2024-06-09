@@ -78,7 +78,7 @@ public class ConsoleMenuApp
         }
         return submenu.Show();
     }
-
+    
     public static class DefaultOptions
     {
         public static ConsoleItem GetFolder(ConsoleMenuApp menuApp, string name, string initialPath)
