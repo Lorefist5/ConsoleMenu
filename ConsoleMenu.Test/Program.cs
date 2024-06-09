@@ -17,7 +17,7 @@ void AddStudent()
         Prompt = "Enter student name: ",
         IsRequired = true,
         MinLength = minStudentNameLength,
-        MaxLength = 50,
+        MaxLength = maxStudentLength,
         CustomValidator = value => !students.Contains(value),
         CustomValidationFailureMessage = "Student already exists."
     };
@@ -46,7 +46,7 @@ void EditStudent()
         Prompt = "Enter new student name: ",
         IsRequired = true,
         MinLength = 3,
-        MaxLength = 50,
+        MaxLength = maxStudentLength,
         CustomValidator = value => !students.Contains(value),
         CustomValidationFailureMessage = "Student already exists."
     };
