@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleMenu;
 
-public class ConsolePrompt
+public class ConsoleInput
 {
     public required string Prompt { get; set; }
     public string IsRequiredFailureMessage { get; set; } = "The option is required.";

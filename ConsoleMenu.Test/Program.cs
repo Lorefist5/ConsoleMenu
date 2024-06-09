@@ -12,7 +12,7 @@ var students = new List<string>();
 void AddStudent()
 {
     Console.Clear();
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter student name: ",
         IsRequired = true,
@@ -34,14 +34,14 @@ void EditStudent()
         Console.WriteLine("No students to edit.");
         return;
     }
-    var existingStudentPrompt = new ConsolePrompt
+    var existingStudentPrompt = new ConsoleInput
     {
         Prompt = "Enter student name to edit: ",
         IsRequired = true,
         CustomValidator = students.Contains,
         CustomValidationFailureMessage = "Student not found."
     };
-    var newStudentNamePrompt = new ConsolePrompt()
+    var newStudentNamePrompt = new ConsoleInput()
     {
         Prompt = "Enter new student name: ",
         IsRequired = true,
@@ -67,7 +67,7 @@ void DeleteStudent()
         Console.WriteLine("No students to delete.");
         return;
     }
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter student name to delete: ",
         IsRequired = true,
@@ -90,13 +90,13 @@ void ListStudents()
         Console.WriteLine(student);
     }
 
-    ConsolePrompt.PressAnyKeyToContinue();
+    ConsoleInput.PressAnyKeyToContinue();
     Console.Clear();
 }
 
 void SearchStudent()
 {
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter student name to search: ",
         IsRequired = true
@@ -144,7 +144,7 @@ void RunTests()
 void TestRequiredField()
 {
     Console.WriteLine("TestRequiredField:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter your name: ",
         IsRequired = true
@@ -156,7 +156,7 @@ void TestRequiredField()
 void TestEmailValidation()
 {
     Console.WriteLine("\nTestEmailValidation:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter your email: ",
         IsEmail = true,
@@ -169,7 +169,7 @@ void TestEmailValidation()
 void TestPasswordField()
 {
     Console.WriteLine("\nTestPasswordField:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter your password: ",
         IsPassword = true,
@@ -182,7 +182,7 @@ void TestPasswordField()
 void TestAcceptableValues()
 {
     Console.WriteLine("\nTestAcceptableValues:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a color (red, green, blue): ",
         AcceptableValues = new List<string> { "red", "green", "blue" },
@@ -195,7 +195,7 @@ void TestAcceptableValues()
 void TestMinLength()
 {
     Console.WriteLine("\nTestMinLength:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a username (min 5 characters): ",
         MinLength = 5,
@@ -208,7 +208,7 @@ void TestMinLength()
 void TestMaxLength()
 {
     Console.WriteLine("\nTestMaxLength:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a short description (max 10 characters): ",
         MaxLength = 10,
@@ -221,7 +221,7 @@ void TestMaxLength()
 void TestIntField()
 {
     Console.WriteLine("\nTestIntField:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a number: ",
         IsRequired = true
@@ -233,7 +233,7 @@ void TestIntField()
 void TestCustomValidator()
 {
     Console.WriteLine("\nTestCustomValidator:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a value that starts with 'A': ",
         CustomValidator = value => value.StartsWith("A"),
@@ -246,7 +246,7 @@ void TestCustomValidator()
 void TestFormatter()
 {
     Console.WriteLine("\nTestFormatter:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a value (will be uppercased): ",
         Formatter = value => value.ToUpper()
@@ -258,7 +258,7 @@ void TestFormatter()
 void TestTimeout()
 {
     Console.WriteLine("\nTestTimeout:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a value within 5 seconds: ",
         Timeout = TimeSpan.FromSeconds(5)
@@ -270,7 +270,7 @@ void TestTimeout()
 void TestRegexValidator()
 {
     Console.WriteLine("\nTestRegexValidator:");
-    var prompt = new ConsolePrompt
+    var prompt = new ConsoleInput
     {
         Prompt = "Enter a value that matches '^[a-zA-Z]+$': ",
         RegexValidator = new Regex("^[a-zA-Z]+$"),
