@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace ConsoleMenu;
 
-public class ConsoleMenuApp
+public partial class ConsoleMenuApp
 {
     public string ExternalValue { get; set; } = string.Empty;
     public string Title { get; set; }

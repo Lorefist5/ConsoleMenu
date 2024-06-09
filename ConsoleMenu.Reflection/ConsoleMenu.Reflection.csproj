@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>ConsoleMenuApp.Reflection</PackageId>
+    <Title>ConsoleMenuApp.Reflection</Title>
+    <Authors>Andres</Authors>
+    <Company>Andres</Company>
+    <Product>ConsoleMenuApp.Reflection</Product>
+    <Description>A extension to the ConsoleMenuApp nuget using reflection</Description>
+    <PackageIcon>Reflection.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Reflection.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

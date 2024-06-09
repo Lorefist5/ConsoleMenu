@@ -1,5 +1,8 @@
 ﻿using ConsoleMenu;
 using ConsoleMenu.Models;
+using ConsoleMenu.Reflection;
+using ConsoleMenu.Reflection.Extensions;
+using ConsoleMenu.Test.Model;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -7,23 +10,121 @@ using System.Threading.Tasks;
 
 int minStudentNameLength = 3;
 int maxStudentLength = 50;
-var students = new List<string>();
+var courses = new List<Course>
+        {
+            new Course
+            {
+                CourseName = "Introduction to Computer Science",
+                CourseCode = "CS101",
+                Credits = 3,
+                Instructor = "Dr. John Doe",
+                StartDate = new DateTime(2023, 9, 1),
+                EndDate = new DateTime(2023, 12, 15),
+                Description = "An introduction to the fundamental concepts of computer science."
+            },
+            new Course
+            {
+                CourseName = "Data Structures and Algorithms",
+                CourseCode = "CS201",
+                Credits = 4,
+                Instructor = "Dr. Jane Smith",
+                StartDate = new DateTime(2023, 9, 1),
+                EndDate = new DateTime(2023, 12, 15),
+                Description = "A course on data structures and algorithms, covering lists, trees, graphs, and sorting algorithms."
+            },
+            new Course
+            {
+                CourseName = "Database Management Systems",
+                CourseCode = "CS301",
+                Credits = 3,
+                Instructor = "Dr. Alan Turing",
+                StartDate = new DateTime(2023, 9, 1),
+                EndDate = new DateTime(2023, 12, 15),
+                Description = "An in-depth study of database management systems, including SQL and NoSQL databases."
+            },
+            new Course
+            {
+                CourseName = "Operating Systems",
+                CourseCode = "CS401",
+                Credits = 4,
+                Instructor = "Dr. Grace Hopper",
+                StartDate = new DateTime(2023, 9, 1),
+                EndDate = new DateTime(2023, 12, 15),
+                Description = "A course on the design and implementation of operating systems."
+            }
+        };
+var students = new List<Student>
+        {
+            new Student
+            {
+                Name = "Alice Johnson",
+                Email = "alice.johnson@example.com",
+                Age = 20,
+                Password = "password123",
+                GPA = 3.7,
+                Address = "123 Main St",
+                PhoneNumber = "555-1234",
+                Major = "Computer Science",
+                EnrollmentDate = new DateTime(2021, 9, 1),
+                GraduationDate = new DateTime(2024, 5, 30),
+                IsOnScholarship = "yes"
+            },
+            new Student
+            {
+                Name = "Andrew Smith",
+                Email = "andrew.smith@example.com",
+                Age = 22,
+                Password = "mypassword",
+                GPA = 3.5,
+                Address = "456 Elm St",
+                PhoneNumber = "555-5678",
+                Major = "Mathematics",
+                EnrollmentDate = new DateTime(2020, 9, 1),
+                GraduationDate = new DateTime(2023, 5, 30),
+                IsOnScholarship = "no"
+            },
+            new Student
+            {
+                Name = "Amanda Williams",
+                Email = "amanda.williams@example.com",
+                Age = 21,
+                Password = "amandapass",
+                GPA = 3.8,
+                Address = "789 Oak St",
+                PhoneNumber = "555-9012",
+                Major = "Physics",
+                EnrollmentDate = new DateTime(2021, 9, 1),
+                GraduationDate = new DateTime(2024, 5, 30),
+                IsOnScholarship = "yes"
+            },
+            new Student
+            {
+                Name = "Arthur Brown",
+                Email = "arthur.brown@example.com",
+                Age = 23,
+                Password = "arthurpassword",
+                GPA = 3.6,
+                Address = "321 Pine St",
+                PhoneNumber = "555-3456",
+                Major = "Chemistry",
+                EnrollmentDate = new DateTime(2019, 9, 1),
+                GraduationDate = new DateTime(2022, 5, 30),
+                IsOnScholarship = "no"
+            }
+        };
 
 void AddStudent()
 {
     Console.Clear();
-    var prompt = new ConsoleInput
+    var student = ConsoleInputReflection.ShowComplicatedDataType<Student>("Creating student");
+    if(students.Any(students => students.Name == student.Name))
     {
-        Prompt = "Enter student name: ",
-        IsRequired = true,
-        MinLength = minStudentNameLength,
-        MaxLength = maxStudentLength,
-        CustomValidator = value => !students.Contains(value),
-        CustomValidationFailureMessage = "Student already exists."
-    };
-    string studentName = prompt.Show();
-    students.Add(studentName);
-    Console.WriteLine($"Student {studentName} added.");
+        Console.WriteLine($"Student {student.Name} already exists.");
+        return;
+    }
+    students.Add(student);
+
+    Console.WriteLine($"Student {student.Name} added.");
 }
 
 void EditStudent()
@@ -38,7 +139,7 @@ void EditStudent()
     {
         Prompt = "Enter student name to edit: ",
         IsRequired = true,
-        CustomValidator = students.Contains,
+        CustomValidator = value => students.Any(students => students.Name == value),
         CustomValidationFailureMessage = "Student not found."
     };
     var newStudentNamePrompt = new ConsoleInput()
@@ -47,15 +148,25 @@ void EditStudent()
         IsRequired = true,
         MinLength = 3,
         MaxLength = maxStudentLength,
-        CustomValidator = value => !students.Contains(value),
+        CustomValidator = value => !students.Any(students => students.Name == value),
         CustomValidationFailureMessage = "Student already exists."
     };
 
     string studentName = existingStudentPrompt.Show();
-    string newStudentName = newStudentNamePrompt.Show();
+    Student student = ConsoleInputReflection.ShowComplicatedDataType<Student>($"Updating student {studentName}: ");
 
-    var index = students.IndexOf(studentName);
-    students[index] = newStudentName;
+    var fetchedStudentResults = students.FirstOrDefault(students => students.Name == studentName);
+    if(fetchedStudentResults == null)
+    {
+        Console.WriteLine("Student was not found...");
+        return;
+    }
+    fetchedStudentResults.Name = student.Name;
+    fetchedStudentResults.Email = student.Email;
+    fetchedStudentResults.Age = student.Age;
+    fetchedStudentResults.Password = student.Password;
+    fetchedStudentResults.GPA = student.GPA;
+
 
 }
 
@@ -71,11 +182,18 @@ void DeleteStudent()
     {
         Prompt = "Enter student name to delete: ",
         IsRequired = true,
-        CustomValidator = students.Contains,
+        CustomValidator = value => students.Any(students => students.Name == value),
         CustomValidationFailureMessage = "Student not found."
     };
     string studentName = prompt.Show();
-    students.Remove(studentName);
+    var fetchedStudentResults = students.FirstOrDefault(students => students.Name == studentName);
+    if(fetchedStudentResults == null)
+    {
+        Console.WriteLine("Student was not found...");
+        return;
+    }
+
+    students.Remove(fetchedStudentResults);
     
     Console.WriteLine($"Student {studentName} deleted.");
 
@@ -85,11 +203,7 @@ void ListStudents()
 {
     Console.Clear();
     Console.WriteLine("Listing students:");
-    foreach (var student in students)
-    {
-        Console.WriteLine(student);
-    }
-
+    ConsoleOutputReflection.ShowTable(students);
     ConsoleInput.PressAnyKeyToContinue();
     Console.Clear();
 }
@@ -103,9 +217,10 @@ void SearchStudent()
     };
     string studentName = prompt.Show();
 
-    if (students.Contains(studentName))
+    if (students.Any(students => students.Name == studentName))
     {
         Console.WriteLine($"Student {studentName} found.");
+        Console.WriteLine($"Student information: {students.FirstOrDefault(students => students.Name == studentName)}");
     }
     else
     {
@@ -136,6 +251,7 @@ void RunTests()
         ConsoleItem.CreateSpecialItem("List students", ListStudents),
         ConsoleItem.CreateSpecialItem("Search student", SearchStudent)
     }));
+
     app.AddItem(ConsoleMenuApp.DefaultOptions.Exit("Exit"));
     app.AddItem(ConsoleMenuApp.DefaultOptions.ClearConsole("Clear console"));
     app.Open();

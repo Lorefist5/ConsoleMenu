@@ -28,7 +28,19 @@ public class ConsoleInput
     public int? MaxRange { get; set; } = null;
     public Regex? RegexValidator { get; set; } = null;
     public bool ClearConsoleAfterError = true;
-
+    public object Show(Type type)
+    {
+        try
+        {
+            var input = Convert.ChangeType(Show(), type);
+            return input;
+        }
+        catch
+        {
+            Console.WriteLine(ValidFormatFailureMessage);
+            return Show(type);
+        }
+    }
     public T Show<T>()
     {
         try
@@ -41,6 +53,41 @@ public class ConsoleInput
             Console.WriteLine(ValidFormatFailureMessage);
             return Show<T>();
         }
+    }
+    public DateTime ShowDate()
+    {
+        DateTime selectedDate = DateTime.Today;
+        bool done = false;
+
+        while (!done)
+        {
+            Console.Clear();
+            Console.WriteLine(Prompt);
+            Console.WriteLine($"Use arrow keys to change date. Press Enter to confirm.");
+            Console.WriteLine($"Selected Date: {selectedDate:yyyy-MM-dd}");
+
+            var key = Console.ReadKey(true).Key;
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    selectedDate = selectedDate.AddDays(1);
+                    break;
+                case ConsoleKey.DownArrow:
+                    selectedDate = selectedDate.AddDays(-1);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    selectedDate = selectedDate.AddMonths(-1);
+                    break;
+                case ConsoleKey.RightArrow:
+                    selectedDate = selectedDate.AddMonths(1);
+                    break;
+                case ConsoleKey.Enter:
+                    done = true;
+                    break;
+            }
+        }
+
+        return selectedDate;
     }
     public static void PressAnyKeyToContinue(string prompt = "Press any key to continue...")
     {

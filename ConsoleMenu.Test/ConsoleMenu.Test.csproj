@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleMenu.Reflection\ConsoleMenu.Reflection.csproj" />
     <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj" />
   </ItemGroup>
 
